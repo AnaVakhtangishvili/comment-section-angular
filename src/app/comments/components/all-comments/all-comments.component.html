@@ -1,0 +1,19 @@
+<div class="main-container">
+  <div class="main-container__all-comments">
+    <app-comment 
+      *ngFor="let maincomment of getMainComments()"
+      [comment]="maincomment"
+      [currentUserName]="currentUserName"
+      [replaysArray]="getReplies(maincomment.id)"
+      [openForm]="openForm"
+      (increaseScore)="increaseScore(maincomment.id, maincomment.score)"
+      (activateForm)="activateForm($event)"
+      (addNewReply)="addNewComment($event)"
+      (updateComment)="updateComment($event)"
+      (deleteComment)="deleteComment($event)"
+      >
+    </app-comment>
+    <app-comment-form submitStatus="write" (submitHandler)="addNewComment({commentText: $event, parentId: null})"></app-comment-form>
+  </div>
+  <app-modal *ngIf="deleteIsClicked"></app-modal>
+</div>

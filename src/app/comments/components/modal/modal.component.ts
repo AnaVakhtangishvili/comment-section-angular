@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommentInterface } from '../../types/interfaces';
+import { CommentInterface } from '../../models/comments.model';
 
 @Component({
   selector: 'app-modal',

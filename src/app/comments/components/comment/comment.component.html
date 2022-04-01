@@ -1,37 +1,86 @@
 <div class="comment-container">
   <div class="comment">
     <div class="comment__score">
-      <button class="btn btn__up-and-down " (click)="increaseScore.emit({commentId: comment.id, commentScore: comment.score})" [disabled]="increaseDisable">+</button>
-      <span>{{ comment.score }}</span>
-      <button class="btn btn__up-and-down" (click)="decreaseScore.emit({commentId: comment.id, commentScore: comment.score})">-</button>
+      <button
+        class="btn btn__up-and-down"
+        (click)="
+          increaseScore({ score: comment?.score, id: comment?.id })
+        "
+      >
+        +
+      </button>
+      <span> {{ comment?.score }}</span>
+      <button
+        class="btn btn__up-and-down"
+        (click)="
+          decreaseScore({ score: comment?.score, id: comment?.id })
+        "
+      >
+        -
+      </button>
     </div>
-    
+
     <div class="comment__info">
       <div class="comment__header">
         <div class="comment__header--left-part">
           <div class="comment__image-container">
-            <img src={{comment.user.image.webp}} alt="user avatar">
+            <img src="{{ comment?.user?.image?.webp }}" alt="user avatar" />
           </div>
-          <p class="comment__author">{{comment.user.username}}</p>
-          <span *ngIf="comment.user.username === currentUserName" class="comment__badge">you</span>
-          <span>{{getDate(comment.createdAt) }}</span>
+          <p class="comment__author">{{ comment?.user?.username }}</p>
+          <span
+            class="comment__badge"
+            *ngIf="comment?.user?.username === currentUser?.username"
+          >
+            you
+          </span>
+          <span>{{ this.comment?.createdAt | timeAgo }}</span>
         </div>
         <div class="comment__action-buttons">
-          <button class="btn btn__action" *ngIf="canReply" (click)='activateForm.emit({id: comment.id, state: formState.replying})'><i class="fa-solid fa-reply"></i>Reply</button>
-          <button class="btn btn__action btn__action--delete" *ngIf="canDelete" (click)="deleteComment.emit(comment.id)"><i class="fa-solid fa-trash"></i>Delete</button>
-          <button class="btn btn__action" *ngIf="canEdit" (click)='activateForm.emit({id: comment.id, state: formState.editing})'><i class="fa-solid fa-pencil"></i>Edit</button>
+          <button
+            class="btn btn__action"
+            *ngIf="canReply"
+            (click)="
+              activatingForm.emit({
+                id: comment?.id,
+                state: formState.replying
+              })
+            "
+          >
+            <i class="fa-solid fa-reply"></i>{{ buttonAction.reply }}
+          </button>
+          <button
+            class="btn btn__action btn__action--delete"
+            *ngIf="canDelete"
+            (click)="deleteComment.emit(comment?.id)"
+          >
+            <i class="fa-solid fa-trash"></i>{{ buttonAction.delete }}
+          </button>
+          <button
+            class="btn btn__action"
+            *ngIf="canEdit"
+            (click)="
+              activatingForm.emit({ id: comment?.id, state: formState.editing })
+            "
+          >
+            <i class="fa-solid fa-pencil"></i>{{ buttonAction.edit }}
+          </button>
         </div>
       </div>
       <div class="comment__content">
         <div class="comment__content--text">
-          <ng-container *ngIf="!editing()">{{ comment.content }}</ng-container>
-
+          <ng-container *ngIf="!editing()">{{ comment?.content }}</ng-container>
           <!-- edit comment -->
-          <app-comment-form class="editing-form"
-          *ngIf="editing()" 
-          submitStatus="Update" 
-          [initialText]="comment.content" 
-          (submitHandler)="updateComment.emit({commentText: $event, commentId: comment.id, createdAt: comment.createdAt})"
+          <app-comment-form
+            class="editing-form"
+            *ngIf="editing()"
+            [submitState]="submitState.update"
+            [initialContent]="comment?.content"
+            (submitHandler)="
+              updateComment.emit({
+                commentContent: $event,
+                commentId: comment?.id
+              })
+            "
           ></app-comment-form>
         </div>
       </div>
@@ -39,28 +88,23 @@
   </div>
 
   <!-- reply comment -->
-  <app-comment-form 
-    *ngIf="replying()" 
-    submitStatus="reply"
-    (submitHandler)="addNewReply.emit({commentText: $event, parentId: replyId})"
-    [initialText]="comment.user.username"
-    ></app-comment-form>
+  <app-comment-form
+    *ngIf="replying()"
+    [currentUser]="currentUser"
+    [submitState]="submitState.reply"
+    [initialContent]=""
+    (submitHandler)="submitReply($event)"
+  ></app-comment-form>
 
-  <!-- replies -->
-  <div class="replies" *ngIf="replaysArray.length > 0">
-    <app-comment 
-      *ngFor="let reply of replaysArray"
-      [comment]="reply"
-      [openForm]="openForm"
-      [parentId]="comment.id"
-      [replaysArray]="[]"
-      [currentUserName]="currentUserName"
-      (increaseScore)="increaseScore.emit($event)"
-      (decreaseScore)="decreaseScore.emit($event)"
-      (addNewReply)="addNewReply.emit($event)"
-      (activateForm)="activateForm.emit($event)"
-      (updateComment)="updateComment.emit($event)"
-      (deleteComment)="deleteComment.emit($event)"
-      ></app-comment>
+  <div class="replies" *ngIf="comment?.replies?.length">
+    <app-reply
+      *ngFor="let reply of comment?.replies"
+      [currentUser]="currentUser"
+      [reply]="reply"
+      (onDecreaseReplyScore)="decreaseReplyScoreHndler($event)"
+      (onSubmitReplyOfReply)="submitReplyOfReplyHandler($event)"
+      (onDeleteReply)="deleteReplyHandler($event)"
+      (onUpdateReply)="updateReplyHandler($event)"
+    ></app-reply>
   </div>
 </div>

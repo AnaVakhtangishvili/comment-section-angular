@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommentInterface } from '../../types/interfaces';
+import { SubmitStateEnum, UserInterface } from '../../models/comments.model';
 
 @Component({
   selector: 'app-comment-form',
@@ -8,24 +8,25 @@ import { CommentInterface } from '../../types/interfaces';
   styleUrls: ['./comment-form.component.scss']
 })
 export class CommentFormComponent implements OnInit {
-  @Input() submitStatus!: string;
-  @Input() comment!: CommentInterface;
-  @Input() initialText: string = '';
+  @Input() currentUser: UserInterface | undefined;
+  @Input() initialContent: string | undefined = '';
+  @Input() submitState: string | undefined;
 
-  @Output() submitHandler = new EventEmitter<string>();
-
-  form!: FormGroup;
+  @Output() submitHandler = new EventEmitter <string>();
 
   constructor(private formBuilder: FormBuilder) { }
 
+  form!: FormGroup;
+
+  submitForm() {
+    this.submitHandler.emit(this.form.value.commentContent);
+    this.form.reset();
+  }
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      text: [this.initialText, Validators.required]
+      commentContent: [this.initialContent, Validators.required]
     })
   }
 
-  onSubmit() {
-    this.submitHandler.emit(this.form.value.text);
-    this.form.reset();
-  }
 }

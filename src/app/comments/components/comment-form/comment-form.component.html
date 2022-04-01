@@ -1,7 +1,15 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="comment">
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="comment">
   <div class="comment__image-container">
-    <img src="/assets/images/image-juliusomo.webp" alt="user avatar">
+    <img src="{{ currentUser?.image?.webp }}" alt="user avatar" />
   </div>
-  <textarea class="textarea" formControlName="text" placeholder="add comment..."></textarea>
-  <button class="btn btn__submit" type="submit" [disabled]="form.invalid">{{ submitStatus }}</button>
+  <textarea
+    formControlName="commentContent"
+    class="textarea"
+    placeholder="add comment..."
+  ></textarea>
+  <button
+    class="btn btn__submit"
+    type="submit"
+    [disabled]="form.invalid"
+  > {{ submitState }} </button>
 </form>

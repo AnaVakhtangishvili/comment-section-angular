@@ -1,0 +1,83 @@
+<div class="comment">
+  <div class="comment__score">
+    <button
+      class="btn btn__up-and-down"
+      (click)="increaseReplyScore({ score: reply?.score, id: reply?.id })"
+    >
+      +
+    </button>
+    <span> {{ reply?.score }}</span>
+    <button
+      class="btn btn__up-and-down"
+      (click)="decreaseReplyScore({ score: reply?.score, id: reply?.id })"
+    >
+      -
+    </button>
+  </div>
+
+  <div class="comment__info">
+    <div class="comment__header">
+      <div class="comment__header--left-part">
+        <div class="comment__image-container">
+          <img src="{{ reply?.user?.image?.webp }}" alt="user avatar" />
+        </div>
+        <p class="comment__author">{{ reply?.user?.username }}</p>
+        <span
+          class="comment__badge"
+          *ngIf="reply?.user?.username === currentUser?.username"
+        >
+          you
+        </span>
+        <span>{{ this.reply?.createdAt | timeAgo }}</span>
+      </div>
+      <div class="comment__action-buttons">
+        <button
+          class="btn btn__action"
+          *ngIf="reply?.user?.username !== currentUser?.username"
+          (click)="toggleReply()"
+        >
+          <i class="fa-solid fa-reply"></i>{{ buttonAction.reply }}
+        </button>
+        <button
+          class="btn btn__action btn__action--delete"
+          *ngIf="reply?.user?.username === currentUser?.username"
+          (click)="deleteReply()"
+        >
+          <i class="fa-solid fa-trash"></i>{{ buttonAction.delete }}
+        </button>
+        <button
+          class="btn btn__action"
+          *ngIf="reply?.user?.username === currentUser?.username"
+          (click)="toggleEdit()"
+        >
+          <i class="fa-solid fa-pencil"></i>{{ buttonAction.edit }}
+        </button>
+      </div>
+    </div>
+    <div class="comment__content">
+      <div class="comment__content--text">
+        <ng-container *ngIf="!activateEditForm">
+          <span class="replyingTo">@{{ reply?.replyingTo }}</span>
+          {{ reply?.content }}
+        </ng-container>
+        <!-- edit comment -->
+        <app-comment-form
+          class="editing-form"
+          *ngIf="activateEditForm"
+          [submitState]="submitState.update"
+          [initialContent]="reply?.content"
+          (submitHandler)="updateReply($event)"
+        ></app-comment-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- reply comment -->
+<app-comment-form
+  *ngIf="activateReplyForm"
+  [currentUser]="currentUser"
+  [submitState]="submitState.reply"
+  [initialContent]=""
+  (submitHandler)="submitReplyOfReply($event)"
+></app-comment-form>

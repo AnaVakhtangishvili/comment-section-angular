@@ -1,0 +1,40 @@
+form {
+  .textarea {
+    width: 70%;
+    min-height: 100px;
+    padding: 1rem;
+    resize: none;
+    outline: none;
+    border: 2px solid $Light-gray;
+    border-radius: $border-radius;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1rem;
+    color: $Dark-blue;
+
+    &:focus {
+      border: 2px solid $Moderate-blue;
+    }
+
+    &::placeholder {
+      text-transform: capitalize;
+    }
+  }
+}
+
+// editing form
+.comment__content .comment {
+  flex-direction: column;
+  padding: 0;
+
+  .comment__image-container {
+    display: none;
+  }
+
+  .textarea {
+    width: 100%;
+  }
+
+  .btn {
+    align-self: flex-end;
+  }
+}

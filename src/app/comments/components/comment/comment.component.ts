@@ -1,70 +1,113 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { formStateEnum } from '../../types/emuns';
-import { CommentInterface, formStateInterface } from '../../types/interfaces';
+import {
+  ActiveFormInterface,
+  ButtonActionEnum,
+  CommentInterface,
+  FormStateEnum,
+  SubmitStateEnum,
+  UserInterface,
+} from '../../models/comments.model';
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.scss']
+  styleUrls: ['./comment.component.scss'],
 })
 export class CommentComponent implements OnInit {
-  @Input() comment!: CommentInterface;
-  @Input() currentUserName!: string;
-  @Input() replaysArray!: CommentInterface[];
-  @Input() openForm!: formStateInterface | null;
-  @Input() parentId!: number | null;
-  @Input() increaseDisable: boolean = false;
-  @Input() deleteIsClicked: boolean = false;
+  @Input() comment: CommentInterface | undefined;
+  @Input() currentUserName: string | undefined;
+  @Input() currentUser: UserInterface | undefined;
+  @Input() submitState = SubmitStateEnum;
+  @Input() initialContent: string = '';
+  @Input() activeForm!: ActiveFormInterface | null;
 
-  @Output() activateForm = new EventEmitter<formStateInterface>();
-  @Output() addNewReply = new EventEmitter<{commentText: string, parentId: number | null}>();
-  @Output() updateComment = new EventEmitter<{commentText: string, commentId: number, createdAt: string}>();
+  @Output() updateComment = new EventEmitter<{
+    commentContent: string;
+    commentId: number | undefined;
+  }>();
   @Output() deleteComment = new EventEmitter<number>();
-  @Output() increaseScore = new EventEmitter<{commentId:number, commentScore: number}>();
-  @Output() decreaseScore = new EventEmitter<{commentId:number, commentScore: number}>();
-  @Output() throwId = new EventEmitter<number>();
-
+  @Output() activatingForm = new EventEmitter<ActiveFormInterface>();
+  @Output() OnIncreaseScore = new EventEmitter<{
+    score: number | undefined;
+    id: number | undefined;
+  }>();
+  @Output() OnDecreaseScore = new EventEmitter<{
+    score: number | undefined;
+    id: number | undefined;
+  }>();
+  @Output() onSubmitReply = new EventEmitter<{content: string, replyingTo: string | undefined,commentId: number | undefined}>();
+  @Output() onSubmitReplyOfReplyHandler = new EventEmitter<{content: string, replyingTo: string | undefined,commentId: number | undefined}>();
+  @Output() onDeleteReplyHandler = new EventEmitter<{replyId: number | undefined,commentId: number | undefined}>();
+  @Output() onUpdateReplyHandler = new EventEmitter<{replyContent: string, replyId: number | undefined, mainCommentId: number | undefined}>();
+  
+  
+  
+  buttonAction = ButtonActionEnum;
   canReply: boolean = false;
   canEdit: boolean = false;
   canDelete: boolean = false;
-  formState = formStateEnum;
-  replyId: number | null = null;
+  formState = FormStateEnum;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-    this.canReply = Boolean(this.currentUserName) && this.comment.user.username !== this.currentUserName;
-    this.canEdit = this.currentUserName === this.comment.user.username;
-    this.canDelete = this.currentUserName === this.comment.user.username;
-    this.replyId = this.parentId ? this.parentId : this.comment.id;
+    this.canActions();
+    // this.timeAgo();
+  }
+
+  canActions() {
+    this.canReply = this.comment?.user?.username !== this.currentUser?.username;
+    this.canEdit = this.comment?.user?.username === this.currentUser?.username;
+    this.canDelete =
+      this.comment?.user?.username === this.currentUser?.username;
   }
 
   replying(): boolean {
-    if (!this.openForm) {
+    if (!this.activeForm) {
       return false;
     }
-    return this.openForm.id === this.comment.id && this.openForm.state === this.formState.replying;
+    return (
+      this.activeForm.id === this.comment?.id &&
+      this.activeForm.state === this.formState.replying
+    );
   }
 
   editing(): boolean {
-    if (!this.openForm) {
+    if (!this.activeForm) {
       return false;
     }
-    return this.openForm.id === this.comment.id && this.openForm.state === this.formState.editing;
+    return (
+      this.activeForm.id === this.comment?.id &&
+      this.activeForm.state === this.formState.editing
+    );
   }
 
-  getDate(commentDate: string): string {
-    const passedTime =  new Date().getTime() - new Date(commentDate).getTime();
-    if (passedTime < 60000) {
-      return "seconds ago";
-    } else if (passedTime >= 60000 && passedTime < 60*60000) {
-      return `${Math.floor(passedTime / 60000)} minutes ago`;
-    } else if (passedTime >= 60*60000 && passedTime < 24*60*60000) {
-      return `${Math.round(passedTime / 60*60000)} hours ago`;
-    } else if (passedTime >= 24*60*60000 && passedTime < 30*24*60*60000) {
-      return `${Math.floor(passedTime / 24*60*60000)} days ago`;
-    } else {
-      return 'long ago';
-    }
+  submitReply(content: string) {
+    this.onSubmitReply.emit({content, replyingTo: this.comment?.user?.username, commentId: this.comment?.id})
   }
+
+  submitReplyOfReplyHandler({content, replyingTo}: {content: string, replyingTo: string | undefined}) {
+    this.onSubmitReplyOfReplyHandler.emit({content, replyingTo, commentId: this.comment?.id});
+  }
+
+  
+  deleteReplyHandler(replyId: number | undefined) {
+    this.onDeleteReplyHandler.emit({replyId, commentId: this.comment?.id})
+  }
+
+  updateReplyHandler({replyContent, replyId}: {replyContent: string, replyId: number | undefined}) {
+    this.onUpdateReplyHandler.emit({replyContent, replyId, mainCommentId: this.comment?.id})
+  }
+  
+  increaseScore({score, id}: {score: number | undefined, id: number | undefined}) {
+    this.OnIncreaseScore.emit({score: score, id: id})
+  }
+
+  decreaseScore({score, id}: {score: number | undefined, id: number | undefined}) {
+    this.OnDecreaseScore.emit({score: score, id: id})
+  }
+  decreaseReplyScoreHndler({score, id}: { score: number | undefined, id: number | undefined }) {
+    // this.onDecreaseReplyScoreHndler.emit({score: score, id: id})
+  }
+
 }

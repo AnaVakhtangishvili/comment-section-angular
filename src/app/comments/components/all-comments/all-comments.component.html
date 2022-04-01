@@ -1,19 +1,25 @@
 <div class="main-container">
   <div class="main-container__all-comments">
-    <app-comment 
-      *ngFor="let maincomment of getMainComments()"
-      [comment]="maincomment"
+    <app-comment
+      *ngFor="let comment of commentsData"
+      [comment]="comment"
       [currentUserName]="currentUserName"
-      [replaysArray]="getReplies(maincomment.id)"
-      [openForm]="openForm"
-      (increaseScore)="increaseScore(maincomment.id, maincomment.score)"
-      (activateForm)="activateForm($event)"
-      (addNewReply)="addNewComment($event)"
+      [currentUser]="currentUser"
+      [activeForm]="activeForm"
       (updateComment)="updateComment($event)"
-      (deleteComment)="deleteComment($event)"
-      >
-    </app-comment>
-    <app-comment-form submitStatus="write" (submitHandler)="addNewComment({commentText: $event, parentId: null})"></app-comment-form>
+      (deleteComment)="deleteCommment($event)"
+      (onSubmitReply)="addNewReply($event)"
+      (onSubmitReplyOfReplyHandler)="addNewReply($event)"
+      (onDeleteReplyHandler)="deleteReply($event)"
+      (onUpdateReplyHandler)="updateReply($event)"
+      (activatingForm)="activatingForm($event)"
+      (OnIncreaseScore)="increaseScore($event)"
+      (OnDecreaseScore)="decreaseScore($event)"
+    ></app-comment>
+    <app-comment-form
+      [currentUser]="currentUser"
+      [submitState]="submitState.write"
+      (submitHandler)="addNewComment({ content: $event, user: currentUser })"
+    ></app-comment-form>
   </div>
-  <app-modal *ngIf="deleteIsClicked"></app-modal>
 </div>

@@ -1,0 +1,30 @@
+.modal {
+  @include flex(center, center);
+  background: rgba($color: $Dark-blue, $alpha: 0.5);
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+
+  h3 {
+    text-transform: capitalize;
+    color: $Dark-blue;
+  }
+
+  &__content {
+    width: 90%;
+    max-width: 350px;
+    background: $Very-light-gray;
+    padding: 2rem;
+    border-radius: $border-radius;
+  }
+
+  &__message {
+    margin: 1rem 0;
+    color: $Grayish-Blue;
+  }
+
+  &__buttonsContainer {
+    @include flex(space-between, center);
+  }
+}

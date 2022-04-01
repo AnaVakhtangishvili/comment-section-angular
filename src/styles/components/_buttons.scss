@@ -1,0 +1,81 @@
+.btn {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  font-weight: font-weight(bold);
+  text-transform: capitalize;
+  cursor: pointer;
+
+  &__action {
+    color: $Moderate-blue;
+
+    i {
+      margin-right: 5px;
+    }
+
+    &:hover {
+      color: $Light-grayish-blue;
+      transition: 0.3s ease;
+    }
+
+    &--delete {
+      color: $Soft-Red;
+
+      &:hover {
+        color: $Pale-red;
+        transition: 0.3s ease;
+      }
+    }
+  }
+
+  &__submit {
+    background: $Moderate-blue;
+    color: $White;
+    padding: 0.8rem 1.5rem;
+    letter-spacing: 1px;
+
+    &:hover {
+      background: $Light-grayish-blue;
+      transition: 0.4s ease;
+    }
+  }
+
+  &__modal {
+    display: inline-block;
+    background: $Grayish-Blue;
+    color: $White;
+    text-transform: uppercase;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+
+      &:hover {
+        background: $Dark-blue;
+      }
+
+    &--delete {
+      background: $Soft-Red;
+
+      &:hover {
+        background: $Pale-red;
+        transition: 0.4s ease;
+      }
+    }
+  }
+}
+
+.btn__up-and-down {
+  display: inline-block;
+  width: 100%;
+  color: $Light-grayish-blue;
+  text-align: center;
+  padding: 0;
+
+  &:hover {
+    color: $Moderate-blue;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+}

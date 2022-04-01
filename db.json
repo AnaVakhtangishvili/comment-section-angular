@@ -9,7 +9,6 @@
   "comments": [
     {
       "id": 1,
-      "parentId": null,
       "content": "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
       "createdAt": "1 month ago",
       "score": 12,
@@ -20,14 +19,28 @@
         },
         "username": "amyrobson"
       },
-      "replies": []
+      "replies": [
+        {
+          "id": 1,
+          "content": "test reply",
+          "user": {
+            "image": {
+              "png": "/assets/images/image-juliusomo.png",
+              "webp": "/assets/images/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          },
+          "createdAt": "2022-04-01T13:05:53.599Z",
+          "score": 0,
+          "replyingTo": "amyrobson"
+        }
+      ]
     },
     {
       "id": 2,
-      "parentId": null,
       "content": "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
       "createdAt": "2 weeks ago",
-      "score": 5,
+      "score": 11,
       "user": {
         "image": {
           "png": "/assets/images/image-maxblagun.png",
@@ -35,27 +48,55 @@
         },
         "username": "maxblagun"
       },
-      "replies": []
+      "replies": [
+        {
+          "id": 3,
+          "content": "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
+          "createdAt": "1 week ago",
+          "score": 4,
+          "replyingTo": "maxblagun",
+          "user": {
+            "image": {
+              "png": "/assets/images/image-ramsesmiron.png",
+              "webp": "/assets/images/image-ramsesmiron.webp"
+            },
+            "username": "ramsesmiron"
+          }
+        },
+        {
+          "id": 4,
+          "content": "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+          "createdAt": "2 days ago",
+          "score": 2,
+          "replyingTo": "ramsesmiron",
+          "user": {
+            "image": {
+              "png": "/assets/images/image-juliusomo.png",
+              "webp": "/assets/images/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          }
+        },
+        {
+          "id": 5,
+          "content": "test reply of reply",
+          "user": {
+            "image": {
+              "png": "/assets/images/image-juliusomo.png",
+              "webp": "/assets/images/image-juliusomo.webp"
+            },
+            "username": "juliusomo"
+          },
+          "createdAt": "2022-04-01T13:05:40.949Z",
+          "score": 0,
+          "replyingTo": "ramsesmiron"
+        }
+      ]
     },
     {
       "id": 3,
-      "parentId": 2,
-      "content": "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
-      "createdAt": "1 week ago",
-      "score": 4,
-      "replyingTo": "maxblagun",
-      "user": {
-        "image": {
-          "png": "/assets/images/image-ramsesmiron.png",
-          "webp": "/assets/images/image-ramsesmiron.webp"
-        },
-        "username": "ramsesmiron"
-      }
-    },
-    {
-      "content": "ramsesmiron test reply comment edited",
-      "parentId": 2,
-      "createdAt": "2022-03-21T05:33:44.546Z",
+      "content": "test main comment",
+      "createdAt": "2022-04-01T10:58:40.093Z",
       "score": 0,
       "user": {
         "image": {
@@ -64,12 +105,12 @@
         },
         "username": "juliusomo"
       },
-      "id": 5
+      "replies": []
     },
     {
-      "content": "test root comment",
-      "parentId": null,
-      "createdAt": "2022-03-21T05:11:46.611Z",
+      "id": 4,
+      "content": "test main edited",
+      "createdAt": "2022-04-01T13:06:11.197Z",
       "score": 0,
       "user": {
         "image": {
@@ -78,7 +119,7 @@
         },
         "username": "juliusomo"
       },
-      "id": 6
+      "replies": []
     }
   ]
 }
